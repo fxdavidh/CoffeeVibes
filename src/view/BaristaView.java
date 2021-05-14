@@ -3,7 +3,12 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.List;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,6 +17,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
+import controller.ProductDAO;
+import model.Product;
 
 
 public class BaristaView extends JFrame{
@@ -56,6 +64,13 @@ public class BaristaView extends JFrame{
 		btnadd.setBounds(340,120,100,50);
 		btnvw.setBounds(340,200,100,50);
 		btnrv.setBounds(340,280,100,50);
+		btnadd.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				add();
+			}
+		});
 		add(btnadd);
 		add(btnvw);
 		add(btnrv);
@@ -67,8 +82,22 @@ public class BaristaView extends JFrame{
 	
 	public void add() {
 		JOptionPane addOP = new JOptionPane();
-		String name = addOP.showInputDialog("Enter Product ID : ");
-		
+		Vector<Product> products = new Vector<>();
+		ProductDAO pd = new ProductDAO();
+		products = pd.getAllProduct();
+		ArrayList<String>names = new ArrayList<>();
+		names.add("Select an item");
+		int size = products.size();
+		for(int i=0;i<size;i++) {
+			names.add(products.get(i).getName());
+		}
+		Object[] namesfix = names.toArray();
+		String product = (String) addOP.showInputDialog(null,"Choose product","Add to cart", JOptionPane.DEFAULT_OPTION,null,namesfix,namesfix[0]);
+		if(product == "Select an item") {
+			JOptionPane warning = new JOptionPane();
+			warning.showMessageDialog(null,"Please select an item");;
+			add();
+		}
 	}
 	
 	public BaristaView() {
