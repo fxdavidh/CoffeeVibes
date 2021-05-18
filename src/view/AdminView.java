@@ -214,13 +214,14 @@ public class AdminView extends JFrame {
 					}
 				}
 			}
-			
 		}
-
 	}
 	
 	private void update(String name, String desc, String price, String stock) {
 
+		int index = tbl.getSelectedRow();
+		String id = tbl.getValueAt(index, 0).toString();
+		
 		JPanel panel = new JPanel();
 		TextField nameTxt, descTxt, priceTxt, stockTxt;
 		nameTxt = new TextField();
@@ -238,10 +239,51 @@ public class AdminView extends JFrame {
 		panel.add(priceTxt);
 		panel.add(new JLabel("Stock : "));
 		panel.add(stockTxt);
-		nameTxt.setText(name);
-		descTxt.setText(desc);
-		priceTxt.setText(price);
-		stockTxt.setText(stock);
+		nameTxt.setText(tbl.getValueAt(index, 1).toString());
+		descTxt.setText(tbl.getValueAt(index, 2).toString());
+		priceTxt.setText(tbl.getValueAt(index, 3).toString());
+		stockTxt.setText(tbl.getValueAt(index, 4).toString());
+		
+		int choice = JOptionPane.showConfirmDialog(null,panel, 
+	               "Update a product to list", JOptionPane.OK_CANCEL_OPTION);
+		JOptionPane warning = new JOptionPane();
+		if (choice == JOptionPane.OK_OPTION) {
+			if(nameTxt.getText().isEmpty()) {
+				warning.showMessageDialog(null, "Name Cannot Be Empty");
+				update(nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
+			}else {
+				if(descTxt.getText().isEmpty()) {
+					warning.showMessageDialog(null, "Description Cannot Be Empty");
+					update(nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
+				}else {
+					if(priceTxt.getText().isEmpty()){
+						warning.showMessageDialog(null, "Price Cannot Be Empty");
+						update(nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
+					}
+					else if (!priceTxt.getText().toString().matches("[-+]?\\d*\\.?\\d+")) {
+						warning.showMessageDialog(null, "Price Must Be Numeric");
+						update(nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
+					}
+					else if (Integer.parseInt(priceTxt.getText().toString()) < 1) {
+						warning.showMessageDialog(null, "Price Must Be More Than 1");
+						update(nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
+					}else {
+						if(stockTxt.getText().isEmpty()){
+							warning.showMessageDialog(null, "Stock Cannot Be Empty");
+							update(nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
+						}
+						else if (!stockTxt.getText().toString().matches("[+]?\\d*\\.?\\d+")) {
+							warning.showMessageDialog(null, "Stock Must Be a Positive Numeric");
+							update(nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
+						}
+						else {
+							productDAO.updateProduct(id, nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
+							refreshList();
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	
