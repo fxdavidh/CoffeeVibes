@@ -1,4 +1,4 @@
-package hrView;
+package view;
 
 public class HRView {
 
