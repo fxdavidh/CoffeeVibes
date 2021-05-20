@@ -44,7 +44,7 @@ public class ProductModel {
 					+ "'"+description+"', "
 					+ "'"+price+"', "
 					+ "'"+stock+"')";
-			con.executeQuery(query);
+			con.executeUpdate(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -80,7 +80,7 @@ public class ProductModel {
 	public int getLatestId() {
 		int id = 0;
 		try {
-			String query = "select MAX(id) from customers";
+			String query = "select MAX(id) from products";
 			ResultSet result = con.executeQuery(query);
 			while (result.next()) {
 				id = result.getInt(1);

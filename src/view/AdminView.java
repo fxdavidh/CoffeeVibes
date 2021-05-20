@@ -89,10 +89,11 @@ public class AdminView extends JFrame {
 		dtm = new DefaultTableModel(header,0);
 		for(Product i : products) {
 			Vector<Object> product = new Vector<>();
+			product.add(i.getId());
 			product.add(i.getName());
 			product.add(i.getDescription());
 			product.add(i.getPrice());
-			product.add(i.getPrice());
+			product.add(i.getStock());
 			dtm.addRow(product);
 		}
 		tbl = new JTable(dtm){
@@ -107,8 +108,8 @@ public class AdminView extends JFrame {
 	
 	private void init() {
 		components(); 
-		jsp.setBounds(0, 80,300,300);
 		refreshList();
+		jsp.setBounds(0, 80,300,300);
 		header.add("ID ");
 		header.add("Name");
 		header.add("Description");
@@ -125,7 +126,6 @@ public class AdminView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				System.out.println("ads");
 				add("", "", "", "");
 			}
 		});
@@ -208,7 +208,7 @@ public class AdminView extends JFrame {
 							add(nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
 						}
 						else {
-							productDAO.insertProduct(name, desc, price, stock);
+							productDAO.insertProduct(nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
 							refreshList();
 						}
 					}
@@ -290,6 +290,10 @@ public class AdminView extends JFrame {
 	private void delete() {
 		int index = tbl.getSelectedRow();
 		String id = tbl.getValueAt(index, 0).toString();
+
+		JPanel panel = new JPanel();
+		JLabel warning;
+		
 		if(id.equals("")) {
 			JOptionPane.showMessageDialog(null, "Please select a product to DELETE");
 			refreshList();
@@ -297,7 +301,9 @@ public class AdminView extends JFrame {
 		else {
 			String name = tbl.getValueAt(index, 1).toString();
 			String message = "Are you sure you want to DELETE " + name +"?";
-			int choice = JOptionPane.showConfirmDialog(null, null, message, JOptionPane.YES_NO_OPTION);
+			warning = new JLabel(message);
+			panel.add(warning);
+			int choice = JOptionPane.showConfirmDialog(null, panel, "Confirm Delete", JOptionPane.YES_NO_OPTION);
 			if (choice == JOptionPane.YES_OPTION) {
 				productDAO.deleteProduct(id);
 				refreshList();
