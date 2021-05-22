@@ -57,7 +57,7 @@ public class AdminView extends JFrame {
 	
 	ProductDAO productDAO = new ProductDAO();
 	
-	private Vector<Product> products;
+	private Vector<Product> products = new Vector<Product>();
 	private Vector<String> header = new Vector<>();
 	
 	private void components() {
@@ -85,7 +85,7 @@ public class AdminView extends JFrame {
 	
 	private void refreshList() {
 		remove(jsp);
-		products = new Vector<>(productDAO.getAllProduct());
+		products = productDAO.getAllProduct();
 		dtm = new DefaultTableModel(header,0);
 		for(Product i : products) {
 			Vector<Object> product = new Vector<>();
@@ -108,7 +108,6 @@ public class AdminView extends JFrame {
 	
 	private void init() {
 		components(); 
-		refreshList();
 		jsp.setBounds(0, 80,300,300);
 		header.add("ID ");
 		header.add("Name");
@@ -150,6 +149,7 @@ public class AdminView extends JFrame {
 		add(btndl);
 		add(tbl);
 		add(lb);
+		refreshList();
 	}
 
 	private void add(String name, String desc, String price, String stock) {

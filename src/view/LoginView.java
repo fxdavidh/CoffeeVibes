@@ -14,8 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import adminView.AdminView;
-import hrView.HRView;
 
 public class LoginView extends JFrame implements ActionListener {
 	
