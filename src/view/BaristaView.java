@@ -37,9 +37,11 @@ import javax.swing.table.DefaultTableModel;
 import com.sun.javafx.scene.paint.GradientUtils.Point;
 
 import controller.ProductDAO;
+import controller.TransactionHeaderDAO;
 import controller.VoucherDAO;
 import jdk.nashorn.internal.scripts.JO;
 import model.Product;
+import model.TransactionDetailModel;
 import model.Voucher;
 import model.cartItem;
 
@@ -48,18 +50,26 @@ public class BaristaView extends JFrame{
 	
 	JFrame fr;
 	JPanel pn;
+	JPanel panel;
 	JLabel lb;
+	JTextField ID;
 	JButton btnco; 
 	JButton btnadd; 
 	JButton btnvw; 
 	JButton btnrv; 
 	JTable tbl;
+	JLabel total;
+	JOptionPane addOP;
+	JButton check;
 	JScrollPane jsp;
 	DefaultTableModel dtm; 
 	private ArrayList<cartItem> cart = new ArrayList<>();
 	private Vector<String> header = new Vector<>();
+	private int totalprice = 0;
+	private int tempprice = 0;
 	
 	private void components() {
+		panel = new JPanel();
 		pn = new JPanel();
 		lb = new JLabel("Order Cart");
 		btnco = new JButton("Checkout");
@@ -133,6 +143,8 @@ public class BaristaView extends JFrame{
 	
 	private void init() {
 		components(); 
+		totalprice = 0;
+		tempprice = 0;
 		jsp.setBounds(0, 80,300,300);
 		refreshCart();
 		header.add("No. ");
@@ -208,7 +220,7 @@ public class BaristaView extends JFrame{
 	}
 	
 	private void add() {
-		JOptionPane addOP = new JOptionPane();
+		addOP = new JOptionPane();
 		Vector<Product> products = new Vector<>();
 		ProductDAO pd = new ProductDAO();
 		products = pd.getAllProduct();
@@ -271,35 +283,45 @@ public class BaristaView extends JFrame{
 		}
 	}
 	
-	private void validateVoucher(String ID) {
+	private boolean validateVoucher(String ID) {
 		VoucherDAO vd = new VoucherDAO();
 		Voucher voucher = vd.getVoucher(Integer.parseInt(ID));
 		JOptionPane result = new JOptionPane();
 		if(voucher == null) {
 			result.showMessageDialog(null, "Voucher not found");
+			return false;
 		}else {
 			if(voucher.getStatus() == "N") {
 				result.showMessageDialog(null, "Voucher is no longer valid");
+				return false;
 			}else {
+				tempprice = 0;
 				result.showMessageDialog(null, "Voucher found!\nYou get "+voucher.getDiscount()+"% discount");
+				tempprice = totalprice - (totalprice*voucher.getDiscount()/100);
+				return true;
 			}
 		}
 	}
 	
 	private void checkout() {
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setLayout(new GridLayout(0,1));
 		panel.add(new JLabel("Voucher ID: "));
-		JTextField ID = new JTextField();
+		ID = new JTextField();
 		panel.add(ID);
-		JButton check = new JButton("Check Voucher");
+		check = new JButton("Check Voucher");
 		check.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				String text = ID.getText();
 				if(!text.isEmpty()) {
-					validateVoucher(text);
+					boolean exist = validateVoucher(text);
+					if(exist == true) {
+						total.setText("Total Price: " + tempprice);
+					}else {
+						total.setText("Total Price: " + totalprice);
+					}
 				}else{
 					JOptionPane warning = new JOptionPane();
 					warning.showMessageDialog(null, "Input Voucher ID first");
@@ -308,19 +330,29 @@ public class BaristaView extends JFrame{
 		});
 		panel.add(check);
 		int size = cart.size();
-		int totalprice = 0;
 		for(int i=0;i<size;i++) {
 			totalprice = cart.get(i).getProduct().getPrice() * cart.get(i).getQuantity();
 		}
-		JLabel total = new JLabel("Total Price: " + totalprice);
+		total = new JLabel("Total Price: " + totalprice);
 		panel.add(total);
 		int choice = JOptionPane.showConfirmDialog(null,panel, 
-	               "Checkout Now?", JOptionPane.OK_CANCEL_OPTION);
+	               total.getText() + "\nCheckout Now?", JOptionPane.OK_CANCEL_OPTION);
 		if(choice == JOptionPane.OK_OPTION) {
 			JOptionPane warning = new JOptionPane();
 			if(totalprice == 0) {
 				warning.showMessageDialog(null, "No item in cart");
 				checkout();
+			}else {
+				TransactionHeaderDAO thd = new TransactionHeaderDAO();
+				int nextAI = thd.getNextAI();
+				thd.insertHeader(Integer.parseInt(ID.getText()));
+				int cartSize = cart.size();
+				for(int i=0;i<cartSize;i++) {
+					TransactionDetailModel tdm = new TransactionDetailModel();
+					tdm.insert(nextAI,cart.get(i).getProduct().getId(),cart.get(i).getQuantity());
+				}
+				setVisible(false);
+				new LoginView();
 			}
 		}
 	}
