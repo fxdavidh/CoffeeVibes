@@ -37,7 +37,10 @@ import javax.swing.table.DefaultTableModel;
 import com.sun.javafx.scene.paint.GradientUtils.Point;
 
 import controller.ProductDAO;
+import controller.VoucherDAO;
+import jdk.nashorn.internal.scripts.JO;
 import model.Product;
+import model.Voucher;
 import model.cartItem;
 
 
@@ -119,6 +122,15 @@ public class BaristaView extends JFrame{
 		}
 	}
 	
+	private void removeFromCart(int index,int quantity) {
+		if(cart.get(index).getQuantity() == quantity) {
+			cart.remove(index);
+		}else {
+			cart.get(index).setQuantity(cart.get(index).getQuantity() - quantity);
+		}
+		refreshCart();
+	}
+	
 	private void init() {
 		components(); 
 		jsp.setBounds(0, 80,300,300);
@@ -147,7 +159,33 @@ public class BaristaView extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				if(tbl.getSelectedRow() == -1) {
+					JOptionPane warning = new JOptionPane();
+					warning.showMessageDialog(null,"Select an item first");
+					return;
+				}
 				view();
+			}
+		});
+		btnrv.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(tbl.getSelectedRow() == -1) {
+					JOptionPane warning = new JOptionPane();
+					warning.showMessageDialog(null,"Select an item first");
+					return;
+				}
+				remove();
+			}
+		});
+		btnco.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				checkout();
 			}
 		});
 		add(btnadd);
@@ -215,6 +253,78 @@ public class BaristaView extends JFrame{
 			}
 		}
 	}
+	
+	private void remove() {
+		int index = tbl.getSelectedRow();
+		JOptionPane confirm = new JOptionPane();
+		int qnow = cart.get(index).getQuantity();
+		String quantity = "";
+		do{
+			quantity = confirm.showInputDialog(null, "Quantity :");
+			if(Integer.parseInt(quantity) > qnow) {
+				confirm.showMessageDialog(null,"Quantity exceeded item's quantity in cart");				
+			}
+		}while(Integer.parseInt(quantity) > qnow);
+		int choice = confirm.showConfirmDialog(null,"Are you sure to remove this item(s)?\n" + cart.get(index).getProduct().getName() + " : " + quantity,"Confirmation",JOptionPane.YES_NO_OPTION);
+		if(choice == JOptionPane.YES_OPTION) {
+			removeFromCart(index, Integer.parseInt(quantity));
+		}
+	}
+	
+	private void validateVoucher(String ID) {
+		VoucherDAO vd = new VoucherDAO();
+		Voucher voucher = vd.getVoucher(Integer.parseInt(ID));
+		JOptionPane result = new JOptionPane();
+		if(voucher == null) {
+			result.showMessageDialog(null, "Voucher not found");
+		}else {
+			if(voucher.getStatus() == "N") {
+				result.showMessageDialog(null, "Voucher is no longer valid");
+			}else {
+				result.showMessageDialog(null, "Voucher found!\nYou get "+voucher.getDiscount()+"% discount");
+			}
+		}
+	}
+	
+	private void checkout() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(0,1));
+		panel.add(new JLabel("Voucher ID: "));
+		JTextField ID = new JTextField();
+		panel.add(ID);
+		JButton check = new JButton("Check Voucher");
+		check.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String text = ID.getText();
+				if(!text.isEmpty()) {
+					validateVoucher(text);
+				}else{
+					JOptionPane warning = new JOptionPane();
+					warning.showMessageDialog(null, "Input Voucher ID first");
+				}
+			}
+		});
+		panel.add(check);
+		int size = cart.size();
+		int totalprice = 0;
+		for(int i=0;i<size;i++) {
+			totalprice = cart.get(i).getProduct().getPrice() * cart.get(i).getQuantity();
+		}
+		JLabel total = new JLabel("Total Price: " + totalprice);
+		panel.add(total);
+		int choice = JOptionPane.showConfirmDialog(null,panel, 
+	               "Checkout Now?", JOptionPane.OK_CANCEL_OPTION);
+		if(choice == JOptionPane.OK_OPTION) {
+			JOptionPane warning = new JOptionPane();
+			if(totalprice == 0) {
+				warning.showMessageDialog(null, "No item in cart");
+				checkout();
+			}
+		}
+	}
+	
 	
 	public BaristaView() {
 		initFrame();
