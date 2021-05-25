@@ -146,11 +146,11 @@ public class BaristaView extends JFrame{
 		totalprice = 0;
 		tempprice = 0;
 		jsp.setBounds(0, 80,300,300);
-		refreshCart();
 		header.add("No. ");
 		header.add("Name");
 		header.add("Quantity");
 		header.add("Price");
+		refreshCart();
 		btnco.setBounds(190,400,100, 40);
 		lb.setBounds(110,-10,300,100);
 		lb.setFont(new Font(lb.getFont().getName(), Font.PLAIN, 50));
