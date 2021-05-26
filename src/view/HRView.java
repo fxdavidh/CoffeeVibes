@@ -14,6 +14,18 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import java.awt.GridLayout;
+import java.awt.TextField;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Vector;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -21,6 +33,9 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import controller.EmployeeDAO;
+import controller.PositionDAO;
+import controller.ProductDAO;
+import model.Employee;
 import controller.PositionDAO;
 import controller.ProductDAO;
 import model.Employee;
@@ -44,6 +59,7 @@ public class HRView extends JFrame {
 	PositionDAO positionDAO = new PositionDAO();
 	
 	private Vector<Employee> employees = new Vector<Employee>();
+	PositionDAO positionDAO = new PositionDAO();
 	private Vector<Position> positions = new Vector<Position>();
 	private Vector<String> header = new Vector<>();
 	
@@ -119,6 +135,7 @@ public class HRView extends JFrame {
 		btnadd.setBounds(340,120,100,50);
 		btnup.setBounds(340,200,100,50);
 		btndl.setBounds(340,280,100,50);
+
 		btnpos.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -126,6 +143,7 @@ public class HRView extends JFrame {
 				addPosition("");
 			}
 		});
+
 		btnadd.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -146,7 +164,7 @@ public class HRView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				delete();
+//				delete();
 			}
 		});
 		add(btnpos);

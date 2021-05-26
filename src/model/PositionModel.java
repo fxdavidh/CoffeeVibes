@@ -56,4 +56,34 @@ public class PositionModel {
 		}
 		return id+1;
 	}
+	
+	public int getPositionID(String name) {
+		String query = "SELECT id FROM `positions` WHERE name like '" + name + "'";
+		ResultSet result = con.executeQuery(query);
+		try {
+			if(result.next()) {
+				int ID = result.getInt("id");
+				return ID;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	public String getPositionName(int ID){
+		String query = "SELECT `name` FROM `positions` WHERE id =" + ID;
+		ResultSet result = con.executeQuery(query);
+		try {
+			if(result.next()) {
+				String name = result.getString("name");
+				return name;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
+	}
 }

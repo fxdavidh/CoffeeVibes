@@ -90,4 +90,33 @@ public class ProductModel {
 		}
 		return id+1;
 	}
+	
+	public Product getProduct(int index) {
+		String query = "SELECT * FROM `products` WHERE id =" + index;
+		ResultSet result = con.executeQuery(query);
+		int ID,price,stock;
+		String name,desc;
+		try {
+			if(result.next()) {
+				ID = result.getInt("id");
+				name = result.getString("name");
+				desc = result.getString("description");
+				price = result.getInt("price");
+				stock = result.getInt("stock");
+				Product product = new Product(ID,name,desc,price,stock);
+				return product;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	public void reduceStock(int index,int quantity) {
+		Product product = this.getProduct(index);
+		String query = "UPDATE `products` SET `stock`='"+ (product.getStock() - quantity) +"' WHERE id = " + index;
+		con.executeUpdate(query);
+	}
 }
