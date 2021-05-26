@@ -43,6 +43,10 @@ public class EmployeeDAO {
 			}
 		}
 		int tempId = Integer.parseInt(id);
+		
+		if(status.equalsIgnoreCase("active")) status = "A";
+		else status = "F";
+		
 		int tempSalary = Integer.parseInt(salary);
 		em.updateEmployee(tempId, tempPosition, name, status, tempSalary, username, password);
 	}

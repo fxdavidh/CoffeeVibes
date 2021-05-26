@@ -59,7 +59,6 @@ public class HRView extends JFrame {
 	PositionDAO positionDAO = new PositionDAO();
 	
 	private Vector<Employee> employees = new Vector<Employee>();
-	PositionDAO positionDAO = new PositionDAO();
 	private Vector<Position> positions = new Vector<Position>();
 	private Vector<String> header = new Vector<>();
 	
@@ -164,7 +163,7 @@ public class HRView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-//				delete();
+				delete();
 			}
 		});
 		add(btnpos);
@@ -201,7 +200,6 @@ public class HRView extends JFrame {
 						addPosition(nameTxt.getText());
 					}
 				}
-				
 				positionDAO.insertPosition(nameTxt.getText());
 				refreshList();
 			}
@@ -211,7 +209,7 @@ public class HRView extends JFrame {
 	private void addEmployee(String positionId, String name, String status, String salary, String username, String password) {
 
 		JPanel panel = new JPanel();
-		TextField nameTxt, statusTxt, salaryTxt, usernameTxt, passwordTxt;
+		TextField nameTxt, salaryTxt, usernameTxt, passwordTxt;
 		
 		ArrayList<String> positionID = new ArrayList<String>();
 		positions = positionDAO.getAllPosition();
@@ -225,7 +223,6 @@ public class HRView extends JFrame {
 		JComboBox cmbPosition = new JComboBox(positionFix);
 		
 		nameTxt = new TextField();
-		statusTxt = new TextField();
 		salaryTxt = new TextField();
 		usernameTxt = new TextField();
 		passwordTxt = new TextField();
@@ -236,8 +233,6 @@ public class HRView extends JFrame {
 		panel.add(cmbPosition);
 		panel.add(new JLabel("Name : "));
 		panel.add(nameTxt);
-		panel.add(new JLabel("Status : "));
-		panel.add(statusTxt);
 		panel.add(new JLabel("Salary : "));
 		panel.add(salaryTxt);
 		panel.add(new JLabel("Username : "));
@@ -247,7 +242,6 @@ public class HRView extends JFrame {
 		
 		cmbPosition.setSelectedItem(positionId);
 		nameTxt.setText(name);
-		statusTxt.setText(status);
 		salaryTxt.setText(salary);
 		usernameTxt.setText(username);
 		passwordTxt.setText(password);
@@ -261,54 +255,47 @@ public class HRView extends JFrame {
 			if (index == -1) {
 				warning.showMessageDialog(null,"Please select an ID");
 				addEmployee(cmbPosition.getSelectedItem().toString(), nameTxt.getText(), 
-							statusTxt.getText(), salaryTxt.getText(), usernameTxt.getText(), 
+							"", salaryTxt.getText(), usernameTxt.getText(), 
 							passwordTxt.getText());
 			}else {
 				if (nameTxt.getText().isEmpty()) {
 					warning.showMessageDialog(null, "Name Cannot Be Empty");
 					addEmployee(cmbPosition.getSelectedItem().toString(), nameTxt.getText(), 
-								statusTxt.getText(), salaryTxt.getText(), usernameTxt.getText(), 
-								passwordTxt.getText());
+							"", salaryTxt.getText(), usernameTxt.getText(), 
+							passwordTxt.getText());
 				}else {
-					if (statusTxt.getText().isEmpty()) {
-						warning.showMessageDialog(null, "Status Cannot Be Empty");
+					if (salaryTxt.getText().isEmpty()) {
+						warning.showMessageDialog(null, "Salary Cannot Be Empty");
 						addEmployee(cmbPosition.getSelectedItem().toString(), nameTxt.getText(), 
-									statusTxt.getText(), salaryTxt.getText(), usernameTxt.getText(), 
-									passwordTxt.getText());
+								"", salaryTxt.getText(), usernameTxt.getText(), 
+								passwordTxt.getText());
+					}
+					else if (!salaryTxt.getText().toString().matches("[-+]?\\d*\\.?\\d+")) {
+						warning.showMessageDialog(null, "Salary Must Be Numeric");
+						addEmployee(cmbPosition.getSelectedItem().toString(), nameTxt.getText(), 
+								"", salaryTxt.getText(), usernameTxt.getText(), 
+								passwordTxt.getText());			
+					}
+					else if (Integer.parseInt(salaryTxt.getText().toString()) < 1) {
+						warning.showMessageDialog(null, "Salary Must Be More Than 1");
+						addEmployee(cmbPosition.getSelectedItem().toString(), nameTxt.getText(), 
+								"", salaryTxt.getText(), usernameTxt.getText(), 
+								passwordTxt.getText());				
 					}else {
-						if (salaryTxt.getText().isEmpty()) {
-							warning.showMessageDialog(null, "Salary Cannot Be Empty");
+						if (usernameTxt.getText().isEmpty()) {
+							warning.showMessageDialog(null, "Username Cannot Be Empty");
 							addEmployee(cmbPosition.getSelectedItem().toString(), nameTxt.getText(), 
-										statusTxt.getText(), salaryTxt.getText(), usernameTxt.getText(), 
-										passwordTxt.getText());
-						}
-						else if (!salaryTxt.getText().toString().matches("[-+]?\\d*\\.?\\d+")) {
-							warning.showMessageDialog(null, "Salary Must Be Numeric");
-							addEmployee(cmbPosition.getSelectedItem().toString(), nameTxt.getText(), 
-									statusTxt.getText(), salaryTxt.getText(), usernameTxt.getText(), 
-									passwordTxt.getText());						
-						}
-						else if (Integer.parseInt(salaryTxt.getText().toString()) < 1) {
-							warning.showMessageDialog(null, "Salary Must Be More Than 1");
-							addEmployee(cmbPosition.getSelectedItem().toString(), nameTxt.getText(), 
-									statusTxt.getText(), salaryTxt.getText(), usernameTxt.getText(), 
-									passwordTxt.getText());						
+									"", salaryTxt.getText(), usernameTxt.getText(), 
+									passwordTxt.getText());
 						}else {
-							if (usernameTxt.getText().isEmpty()) {
-								warning.showMessageDialog(null, "Username Cannot Be Empty");
+							if (passwordTxt.getText().isEmpty()) {
+								warning.showMessageDialog(null, "Password Cannot Be Empty");
 								addEmployee(cmbPosition.getSelectedItem().toString(), nameTxt.getText(), 
-											statusTxt.getText(), salaryTxt.getText(), usernameTxt.getText(), 
-											passwordTxt.getText());
+										"", salaryTxt.getText(), usernameTxt.getText(), 
+										passwordTxt.getText());
 							}else {
-								if (passwordTxt.getText().isEmpty()) {
-									warning.showMessageDialog(null, "Password Cannot Be Empty");
-									addEmployee(cmbPosition.getSelectedItem().toString(), nameTxt.getText(), 
-												statusTxt.getText(), salaryTxt.getText(), usernameTxt.getText(), 
-												passwordTxt.getText());
-								}else {
-									employeeDAO.insertEmployee(cmbPosition.getSelectedItem().toString(), nameTxt.getText(), statusTxt.getText(), salaryTxt.getText(), usernameTxt.getText(), passwordTxt.getText());
-									refreshList();
-								}
+								employeeDAO.insertEmployee(cmbPosition.getSelectedItem().toString(), nameTxt.getText(), "A", salaryTxt.getText(), usernameTxt.getText(), passwordTxt.getText());
+								refreshList();
 							}
 						}
 					}
@@ -318,113 +305,116 @@ public class HRView extends JFrame {
 	}
 	
 	private void update(String positionId, String name, String status, String salary, String username, String password) {
-
-		JPanel panel = new JPanel();
-		TextField nameTxt, statusTxt, salaryTxt, usernameTxt, passwordTxt;
+		int index = -1;
+		index = tbl.getSelectedRow();
 		
-		int index = tbl.getSelectedRow();
-		String id = tbl.getValueAt(index, 0).toString();
-		
-		ArrayList<String> positionID = new ArrayList<String>();
-		positions = positionDAO.getAllPosition();
-		
-		positionID.add("Select an ID");
-		int size = positions.size();
-		for(int i=0; i<size; i++) {
-			positionID.add(positions.get(i).getName());
-		}
-		Object[] positionFix = positionID.toArray();
-		JComboBox cmbPosition = new JComboBox(positionFix);
-		
-		nameTxt = new TextField();
-		statusTxt = new TextField();
-		salaryTxt = new TextField();
-		usernameTxt = new TextField();
-		passwordTxt = new TextField();
-		
-		panel.setLayout(new GridLayout(0,1));
-		
-		panel.add(new JLabel("Position ID : "));
-		panel.add(cmbPosition);
-		panel.add(new JLabel("Name : "));
-		panel.add(nameTxt);
-		panel.add(new JLabel("Status : "));
-		panel.add(statusTxt);
-		panel.add(new JLabel("Salary : "));
-		panel.add(salaryTxt);
-		panel.add(new JLabel("Username : "));
-		panel.add(usernameTxt);
-		panel.add(new JLabel("Password : "));
-		panel.add(passwordTxt);
-		
-		for(int i=0; i<positions.size(); i++) {
-			if (Integer.parseInt(tbl.getValueAt(index, 1).toString()) == positions.get(i).getId()) {
-				positionId = positions.get(i).getName();
+		if(index == -1) {
+			JOptionPane.showMessageDialog(null, "Please select an Employee to UPDATE");
+			refreshList();
+		} else {
+			JPanel panel = new JPanel();
+			TextField nameTxt, salaryTxt, usernameTxt, passwordTxt;
+			String id = tbl.getValueAt(index, 0).toString();
+			
+			ArrayList<String> positionID = new ArrayList<String>();
+			positions = positionDAO.getAllPosition();
+			
+			positionID.add("Select an ID");
+			int size = positions.size();
+			for(int i=0; i<size; i++) {
+				positionID.add(positions.get(i).getName());
 			}
-		}
-		
-		cmbPosition.setSelectedItem(positionId);
-		nameTxt.setText(tbl.getValueAt(index, 2).toString());
-		statusTxt.setText(tbl.getValueAt(index, 3).toString());
-		salaryTxt.setText(tbl.getValueAt(index, 4).toString());
-		usernameTxt.setText(tbl.getValueAt(index, 5).toString());
-		passwordTxt.setText(tbl.getValueAt(index, 6).toString());
-		
-		int choice = JOptionPane.showConfirmDialog(null,panel, 
-	               "Add new Employee", JOptionPane.OK_CANCEL_OPTION);
-		JOptionPane warning = new JOptionPane();
-		
-		if (choice == JOptionPane.OK_OPTION) {
-			int select = cmbPosition.getSelectedIndex()-1;
-			if (select == -1) {
-				warning.showMessageDialog(null,"Please select an ID");
-				update(cmbPosition.getSelectedItem().toString(), nameTxt.getText(), 
-							statusTxt.getText(), salaryTxt.getText(), usernameTxt.getText(), 
-							passwordTxt.getText());
-			}else {
-				if (nameTxt.getText().isEmpty()) {
-					warning.showMessageDialog(null, "Name Cannot Be Empty");
+			Object[] positionFix = positionID.toArray();
+			JComboBox cmbPosition = new JComboBox(positionFix);
+			
+			ArrayList<String> statusID = new ArrayList<String>();
+			statusID.add("Active");
+			statusID.add("Fired");
+			Object[] statusFix = statusID.toArray();
+			JComboBox cmbStatus = new JComboBox(statusFix);
+			
+			nameTxt = new TextField();
+			salaryTxt = new TextField();
+			usernameTxt = new TextField();
+			passwordTxt = new TextField();
+			
+			panel.setLayout(new GridLayout(0,1));
+			
+			panel.add(new JLabel("Position ID : "));
+			panel.add(cmbPosition);
+			panel.add(new JLabel("Name : "));
+			panel.add(nameTxt);
+			panel.add(new JLabel("Status : "));
+			panel.add(cmbStatus);
+			panel.add(new JLabel("Salary : "));
+			panel.add(salaryTxt);
+			panel.add(new JLabel("Username : "));
+			panel.add(usernameTxt);
+			panel.add(new JLabel("Password : "));
+			panel.add(passwordTxt);
+			
+			for(int i=0; i<positions.size(); i++) {
+				if (Integer.parseInt(tbl.getValueAt(index, 1).toString()) == positions.get(i).getId()) {
+					positionId = positions.get(i).getName();
+				}
+			}
+			
+			cmbPosition.setSelectedItem(positionId);
+			nameTxt.setText(tbl.getValueAt(index, 2).toString());
+			cmbStatus.setSelectedItem(tbl.getValueAt(index, 3).toString());
+			salaryTxt.setText(tbl.getValueAt(index, 4).toString());
+			usernameTxt.setText(tbl.getValueAt(index, 5).toString());
+			passwordTxt.setText(tbl.getValueAt(index, 6).toString());
+			
+			int choice = JOptionPane.showConfirmDialog(null,panel, 
+		               "Add new Employee", JOptionPane.OK_CANCEL_OPTION);
+			JOptionPane warning = new JOptionPane();
+			
+			if (choice == JOptionPane.OK_OPTION) {
+				int select = cmbPosition.getSelectedIndex()-1;
+				if (select == -1) {
+					warning.showMessageDialog(null,"Please select an ID");
 					update(cmbPosition.getSelectedItem().toString(), nameTxt.getText(), 
-								statusTxt.getText(), salaryTxt.getText(), usernameTxt.getText(), 
+								"", salaryTxt.getText(), usernameTxt.getText(), 
 								passwordTxt.getText());
 				}else {
-					if (statusTxt.getText().isEmpty()) {
-						warning.showMessageDialog(null, "Status Cannot Be Empty");
+					if (nameTxt.getText().isEmpty()) {
+						warning.showMessageDialog(null, "Name Cannot Be Empty");
 						update(cmbPosition.getSelectedItem().toString(), nameTxt.getText(), 
-									statusTxt.getText(), salaryTxt.getText(), usernameTxt.getText(), 
-									passwordTxt.getText());
+								"", salaryTxt.getText(), usernameTxt.getText(), 
+								passwordTxt.getText());
 					}else {
 						if (salaryTxt.getText().isEmpty()) {
 							warning.showMessageDialog(null, "Salary Cannot Be Empty");
 							update(cmbPosition.getSelectedItem().toString(), nameTxt.getText(), 
-										statusTxt.getText(), salaryTxt.getText(), usernameTxt.getText(), 
-										passwordTxt.getText());
+									"", salaryTxt.getText(), usernameTxt.getText(), 
+									passwordTxt.getText());
 						}
 						else if (!salaryTxt.getText().toString().matches("[-+]?\\d*\\.?\\d+")) {
 							warning.showMessageDialog(null, "Salary Must Be Numeric");
 							update(cmbPosition.getSelectedItem().toString(), nameTxt.getText(), 
-									statusTxt.getText(), salaryTxt.getText(), usernameTxt.getText(), 
-									passwordTxt.getText());						
+									"", salaryTxt.getText(), usernameTxt.getText(), 
+									passwordTxt.getText());				
 						}
 						else if (Integer.parseInt(salaryTxt.getText().toString()) < 1) {
 							warning.showMessageDialog(null, "Salary Must Be More Than 1");
 							update(cmbPosition.getSelectedItem().toString(), nameTxt.getText(), 
-									statusTxt.getText(), salaryTxt.getText(), usernameTxt.getText(), 
-									passwordTxt.getText());						
+									"", salaryTxt.getText(), usernameTxt.getText(), 
+									passwordTxt.getText());				
 						}else {
 							if (usernameTxt.getText().isEmpty()) {
 								warning.showMessageDialog(null, "Username Cannot Be Empty");
 								update(cmbPosition.getSelectedItem().toString(), nameTxt.getText(), 
-											statusTxt.getText(), salaryTxt.getText(), usernameTxt.getText(), 
-											passwordTxt.getText());
+										"", salaryTxt.getText(), usernameTxt.getText(), 
+										passwordTxt.getText());
 							}else {
 								if (passwordTxt.getText().isEmpty()) {
 									warning.showMessageDialog(null, "Password Cannot Be Empty");
 									update(cmbPosition.getSelectedItem().toString(), nameTxt.getText(), 
-												statusTxt.getText(), salaryTxt.getText(), usernameTxt.getText(), 
-												passwordTxt.getText());
+											"", salaryTxt.getText(), usernameTxt.getText(), 
+											passwordTxt.getText());
 								}else {
-									employeeDAO.updateEmployee(id, cmbPosition.getSelectedItem().toString(), nameTxt.getText(), statusTxt.getText(), salaryTxt.getText(), usernameTxt.getText(), passwordTxt.getText());
+									employeeDAO.updateEmployee(id, cmbPosition.getSelectedItem().toString(), nameTxt.getText(), cmbStatus.getSelectedItem().toString(), salaryTxt.getText(), usernameTxt.getText(), passwordTxt.getText());
 									refreshList();
 								}
 							}
@@ -436,17 +426,19 @@ public class HRView extends JFrame {
 	}
 	
 	private void delete() {
-		int index = tbl.getSelectedRow();
-		String id = tbl.getValueAt(index, 0).toString();
-
-		JPanel panel = new JPanel();
-		JLabel warning;
+		int index = -1;
+		index = tbl.getSelectedRow();
 		
-		if(id.equals("")) {
+		if(index == -1) {
 			JOptionPane.showMessageDialog(null, "Please select an Employee to DELETE");
 			refreshList();
 		}
 		else {
+			String id = tbl.getValueAt(index, 0).toString();
+
+			JPanel panel = new JPanel();
+			JLabel warning;
+			
 			String name = tbl.getValueAt(index, 2).toString();
 			String message = "Are you sure you want to DELETE " + name +"?";
 			warning = new JLabel(message);

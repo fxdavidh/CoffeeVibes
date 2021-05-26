@@ -218,66 +218,74 @@ public class AdminView extends JFrame {
 	
 	private void update(String name, String desc, String price, String stock) {
 
-		int index = tbl.getSelectedRow();
-		String id = tbl.getValueAt(index, 0).toString();
+		int index = -1;
+		index = tbl.getSelectedRow();
 		
-		JPanel panel = new JPanel();
-		TextField nameTxt, descTxt, priceTxt, stockTxt;
-		nameTxt = new TextField();
-		descTxt = new TextField();
-		priceTxt = new TextField();
-		stockTxt = new TextField();
-		
-		panel.setLayout(new GridLayout(0,1));
-		
-		panel.add(new JLabel("Name : "));
-		panel.add(nameTxt);
-		panel.add(new JLabel("Description : "));
-		panel.add(descTxt);
-		panel.add(new JLabel("Price : "));
-		panel.add(priceTxt);
-		panel.add(new JLabel("Stock : "));
-		panel.add(stockTxt);
-		nameTxt.setText(tbl.getValueAt(index, 1).toString());
-		descTxt.setText(tbl.getValueAt(index, 2).toString());
-		priceTxt.setText(tbl.getValueAt(index, 3).toString());
-		stockTxt.setText(tbl.getValueAt(index, 4).toString());
-		
-		int choice = JOptionPane.showConfirmDialog(null,panel, 
-	               "Update a product to list", JOptionPane.OK_CANCEL_OPTION);
-		JOptionPane warning = new JOptionPane();
-		if (choice == JOptionPane.OK_OPTION) {
-			if(nameTxt.getText().isEmpty()) {
-				warning.showMessageDialog(null, "Name Cannot Be Empty");
-				update(nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
-			}else {
-				if(descTxt.getText().isEmpty()) {
-					warning.showMessageDialog(null, "Description Cannot Be Empty");
+		if(index == -1) {
+			JOptionPane.showMessageDialog(null, "Please select a product to UPDATE");
+			refreshList();
+		} else {
+			String id = tbl.getValueAt(index, 0).toString();
+			
+			JPanel panel = new JPanel();
+			TextField nameTxt, descTxt, priceTxt, stockTxt;
+			nameTxt = new TextField();
+			descTxt = new TextField();
+			priceTxt = new TextField();
+			stockTxt = new TextField();
+			
+			panel.setLayout(new GridLayout(0,1));
+			
+			panel.add(new JLabel("Name : "));
+			panel.add(nameTxt);
+			panel.add(new JLabel("Description : "));
+			panel.add(descTxt);
+			panel.add(new JLabel("Price : "));
+			panel.add(priceTxt);
+			panel.add(new JLabel("Stock : "));
+			panel.add(stockTxt);
+			nameTxt.setText(tbl.getValueAt(index, 1).toString());
+			descTxt.setText(tbl.getValueAt(index, 2).toString());
+			priceTxt.setText(tbl.getValueAt(index, 3).toString());
+			stockTxt.setText(tbl.getValueAt(index, 4).toString());
+			
+			int choice = JOptionPane.showConfirmDialog(null,panel, 
+		               "Update a product to list", JOptionPane.OK_CANCEL_OPTION);
+			JOptionPane warning = new JOptionPane();
+			
+			if (choice == JOptionPane.OK_OPTION) {
+				if(nameTxt.getText().isEmpty()) {
+					warning.showMessageDialog(null, "Name Cannot Be Empty");
 					update(nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
 				}else {
-					if(priceTxt.getText().isEmpty()){
-						warning.showMessageDialog(null, "Price Cannot Be Empty");
-						update(nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
-					}
-					else if (!priceTxt.getText().toString().matches("[-+]?\\d*\\.?\\d+")) {
-						warning.showMessageDialog(null, "Price Must Be Numeric");
-						update(nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
-					}
-					else if (Integer.parseInt(priceTxt.getText().toString()) < 1) {
-						warning.showMessageDialog(null, "Price Must Be More Than 1");
+					if(descTxt.getText().isEmpty()) {
+						warning.showMessageDialog(null, "Description Cannot Be Empty");
 						update(nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
 					}else {
-						if(stockTxt.getText().isEmpty()){
-							warning.showMessageDialog(null, "Stock Cannot Be Empty");
+						if(priceTxt.getText().isEmpty()){
+							warning.showMessageDialog(null, "Price Cannot Be Empty");
 							update(nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
 						}
-						else if (!stockTxt.getText().toString().matches("[+]?\\d*\\.?\\d+")) {
-							warning.showMessageDialog(null, "Stock Must Be a Positive Numeric");
+						else if (!priceTxt.getText().toString().matches("[-+]?\\d*\\.?\\d+")) {
+							warning.showMessageDialog(null, "Price Must Be Numeric");
 							update(nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
 						}
-						else {
-							productDAO.updateProduct(id, nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
-							refreshList();
+						else if (Integer.parseInt(priceTxt.getText().toString()) < 1) {
+							warning.showMessageDialog(null, "Price Must Be More Than 1");
+							update(nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
+						}else {
+							if(stockTxt.getText().isEmpty()){
+								warning.showMessageDialog(null, "Stock Cannot Be Empty");
+								update(nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
+							}
+							else if (!stockTxt.getText().toString().matches("[+]?\\d*\\.?\\d+")) {
+								warning.showMessageDialog(null, "Stock Must Be a Positive Numeric");
+								update(nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
+							}
+							else {
+								productDAO.updateProduct(id, nameTxt.getText(), descTxt.getText(), priceTxt.getText(), stockTxt.getText());
+								refreshList();
+							}
 						}
 					}
 				}
@@ -286,17 +294,19 @@ public class AdminView extends JFrame {
 	}
 	
 	private void delete() {
-		int index = tbl.getSelectedRow();
-		String id = tbl.getValueAt(index, 0).toString();
-
-		JPanel panel = new JPanel();
-		JLabel warning;
+		int index = -1;
+		index = tbl.getSelectedRow();
 		
-		if(id.equals("")) {
+		if(index == -1) {
 			JOptionPane.showMessageDialog(null, "Please select a product to DELETE");
 			refreshList();
 		}
 		else {
+			String id = tbl.getValueAt(index, 0).toString();
+
+			JPanel panel = new JPanel();
+			JLabel warning;
+			
 			String name = tbl.getValueAt(index, 1).toString();
 			String message = "Are you sure you want to DELETE " + name +"?";
 			warning = new JLabel(message);
