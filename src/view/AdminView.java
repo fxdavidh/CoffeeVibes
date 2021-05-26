@@ -286,7 +286,6 @@ public class AdminView extends JFrame {
 		}
 	}
 	
-	
 	private void delete() {
 		int index = tbl.getSelectedRow();
 		String id = tbl.getValueAt(index, 0).toString();
