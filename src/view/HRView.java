@@ -2,12 +2,16 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.TextField;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.GridLayout;
@@ -29,6 +33,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import controller.EmployeeDAO;
+import controller.PositionDAO;
 import controller.ProductDAO;
 import model.Employee;
 import controller.PositionDAO;
@@ -51,6 +56,7 @@ public class HRView extends JFrame {
 	DefaultTableModel dtm; 
 	
 	EmployeeDAO employeeDAO = new EmployeeDAO();
+	PositionDAO positionDAO = new PositionDAO();
 	
 	private Vector<Employee> employees = new Vector<Employee>();
 	PositionDAO positionDAO = new PositionDAO();
