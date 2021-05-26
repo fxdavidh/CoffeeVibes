@@ -38,6 +38,14 @@ public class ManagerView extends JFrame{
 		});
 		add(button1);
 		button2.setBounds(140,250,200,50);
+		button2.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				new ManagerEmployeeView();
+			}
+		});
 		add(button2);
 	}
 	

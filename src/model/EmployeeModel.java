@@ -94,4 +94,20 @@ public class EmployeeModel {
 		}
 		return id+1;
 	}
+	
+	public boolean validateLogin(int positionID, String username, String password) {
+		String query = "SELECT * from `employees` WHERE positionId = " + positionID + " AND username like '" + username +"' AND password like '" + password +"'";
+		ResultSet result = con.executeQuery(query);
+		try {
+			if(result.next()) {
+				return true;
+			}else {
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

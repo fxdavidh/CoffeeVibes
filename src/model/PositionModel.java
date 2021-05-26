@@ -58,7 +58,7 @@ public class PositionModel {
 	}
 	
 	public int getPositionID(String name) {
-		String query = "SELECT * FROM `positions` WHERE name like '" + name + "'";
+		String query = "SELECT id FROM `positions` WHERE name like '" + name + "'";
 		ResultSet result = con.executeQuery(query);
 		try {
 			if(result.next()) {
@@ -70,5 +70,20 @@ public class PositionModel {
 			e.printStackTrace();
 		}
 		return -1;
+	}
+	
+	public String getPositionName(int ID){
+		String query = "SELECT `name` FROM `positions` WHERE id =" + ID;
+		ResultSet result = con.executeQuery(query);
+		try {
+			if(result.next()) {
+				String name = result.getString("name");
+				return name;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
 	}
 }

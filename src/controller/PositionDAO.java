@@ -23,4 +23,9 @@ public class PositionDAO {
 		int ID = pm.getPositionID(name);
 		return ID;
 	}
+	
+	public String getPositionName(int ID){
+		String name = pm.getPositionName(ID);
+		return name;
+	}
 }

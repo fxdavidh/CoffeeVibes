@@ -52,4 +52,8 @@ public class EmployeeDAO {
 		int tempId = Integer.parseInt(id);
 		em.deleteEmployee(tempId);
 	}
+	
+	public boolean validateLogin(int positionID, String username, String password) {
+		return em.validateLogin(positionID, username, password);
+	}
 }
