@@ -2,6 +2,7 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Vector;
 
 
@@ -33,5 +34,60 @@ public class ProductModel {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public void insertProduct(String name, String description, int price, int stock) {
+		// TODO Auto-generated method stub
+		try {
+			String query = "INSERT INTO products VALUES ('"+getLatestId()+"', "
+					+ "'"+name+"', "
+					+ "'"+description+"', "
+					+ "'"+price+"', "
+					+ "'"+stock+"')";
+			con.executeUpdate(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateProduct(int id, String name, String description, int price, int stock) {
+		// TODO Auto-generated method stub
+		try {
+			String query = "UPDATE products "
+					+ "SET name='"+name+"',"
+					+ "description='"+description+"',"
+					+ "price='"+price+"',"
+					+ "stock='"+stock+"'"
+					+ "WHERE id='"+id+"'";
+			con.executeUpdate(query);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	public void deleteProduct(int id) {
+		// TODO Auto-generated method stub
+		try {
+			String query = "DELETE FROM products WHERE id='"+id+"'";
+			con.executeUpdate(query);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	public int getLatestId() {
+		int id = 0;
+		try {
+			String query = "select MAX(id) from products";
+			ResultSet result = con.executeQuery(query);
+			while (result.next()) {
+				id = result.getInt(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return id+1;
 	}
 }

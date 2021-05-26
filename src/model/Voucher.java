@@ -28,4 +28,13 @@ public class Voucher {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	public Voucher(int id, int discount, String status) {
+		super();
+		this.id = id;
+		this.discount = discount;
+		this.status = status;
+	}
+	
+	
 }

@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -14,8 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import adminView.AdminView;
-import hrView.HRView;
 
 public class LoginView extends JFrame implements ActionListener {
 	
@@ -28,13 +27,11 @@ public class LoginView extends JFrame implements ActionListener {
 	private void initFrame() {
 		// TODO Auto-generated method stub
 		setSize(500, 500);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		setLayout(new BorderLayout());
-		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
+		setLayout(null);
+		this.getContentPane().setBackground(Color.WHITE);
 		initHeader();
 		initButton();
-		
 		setVisible(true);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
@@ -42,33 +39,31 @@ public class LoginView extends JFrame implements ActionListener {
 	}
 	
 	private void initHeader() {
-		// TODO Auto-generated method stub
-		JLabel title = new JLabel("Please Login to Your Role");
-		title.setHorizontalAlignment(JLabel.CENTER);
-		title.setFont(new Font(null, Font.BOLD, 18));
-		add(title, BorderLayout.NORTH);
+		JLabel title = new JLabel("Coffee Vibes");
+		title.setBounds(150,0,300,100);
+		title.setFont(new Font(title.getFont().getName(), Font.BOLD, 30));
+		add(title);
 	}
 	
-	private void initButton() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(2, 2));
-		
+	private void initButton() {		
 		adminBtn = new JButton("Admin");
 		baristaBtn = new JButton("Barista");
 		hrBtn = new JButton("Human Resource");
 		managerBtn = new JButton("Manager");
 		
 		adminBtn.addActionListener(this);
+		adminBtn.setBounds(160,110,150,50);
 		baristaBtn.addActionListener(this);
+		baristaBtn.setBounds(160,190,150,50);
 		hrBtn.addActionListener(this);
+		hrBtn.setBounds(160,270,150,50);
 		managerBtn.addActionListener(this);
+		managerBtn.setBounds(160,350,150,50);
 		
-		panel.add(adminBtn);
-		panel.add(baristaBtn);
-		panel.add(hrBtn);
-		panel.add(managerBtn);
-		
-		add(panel, BorderLayout.CENTER);
+		add(adminBtn);
+		add(baristaBtn);
+		add(hrBtn);
+		add(managerBtn);
 	}
 
 	@Override
@@ -88,7 +83,7 @@ public class LoginView extends JFrame implements ActionListener {
 		}
 		else if (e.getSource().equals(managerBtn)){
 			setVisible(false);
-//			new ManagerView();
+			new ManagerView();
 		}
 	}
 }
