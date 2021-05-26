@@ -88,7 +88,10 @@ public class HRView extends JFrame {
 	private void refreshList() {
 		remove(jsp);
 		employees = employeeDAO.getAllEmployee();
+<<<<<<< Updated upstream
 		positions = positionDAO.getAllPosition();
+=======
+>>>>>>> Stashed changes
 		dtm = new DefaultTableModel(header,0);
 		for(Employee i : employees) {
 			Vector<Object> employee = new Vector<>();
@@ -142,7 +145,11 @@ public class HRView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+<<<<<<< Updated upstream
 				addEmployee("", "", "", "", "", "");
+=======
+//				add("", "", "", "");
+>>>>>>> Stashed changes
 			}
 		});
 		btnup.addActionListener(new ActionListener() {
@@ -150,7 +157,11 @@ public class HRView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+<<<<<<< Updated upstream
 				update("", "", "", "", "", "");
+=======
+//				update("", "", "", "");
+>>>>>>> Stashed changes
 			}
 		});
 		btndl.addActionListener(new ActionListener() {
@@ -158,7 +169,7 @@ public class HRView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				delete();
+//				delete();
 			}
 		});
 		add(btnpos);

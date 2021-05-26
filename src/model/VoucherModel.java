@@ -29,4 +29,9 @@ public class VoucherModel {
 		return null; 
 	}
 	
+	public void useVoucher(int ID) {
+		String query = "UPDATE `vouchers` SET `status`='N' WHERE id=" + ID;
+		con.executeUpdate(query);
+	}
+	
 }

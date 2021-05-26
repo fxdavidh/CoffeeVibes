@@ -56,4 +56,19 @@ public class PositionModel {
 		}
 		return id+1;
 	}
+	
+	public int getPositionID(String name) {
+		String query = "SELECT * FROM `positions` WHERE name like '" + name + "'";
+		ResultSet result = con.executeQuery(query);
+		try {
+			if(result.next()) {
+				int ID = result.getInt("id");
+				return ID;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
 }

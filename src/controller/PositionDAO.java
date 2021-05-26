@@ -18,4 +18,9 @@ public class PositionDAO {
 		// TODO Auto-generated method stub
 		pm.insertPosition(name);
 	}
+	
+	public int getPositionId(String name) {
+		int ID = pm.getPositionID(name);
+		return ID;
+	}
 }

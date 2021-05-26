@@ -31,4 +31,13 @@ public class ProductDAO {
 		int tempId = Integer.parseInt(id);
 		pm.deleteProduct(tempId);
 	}
+	
+	public Product getProduct(int index) {
+		Product product = pm.getProduct(index);
+		return product;
+	}
+	
+	public void reduceStock(int index,int quantity) {
+		pm.reduceStock(index, quantity);
+	}
 }

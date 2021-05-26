@@ -67,6 +67,8 @@ public class BaristaView extends JFrame{
 	private Vector<String> header = new Vector<>();
 	private int totalprice = 0;
 	private int tempprice = 0;
+	private ProductDAO pd = new ProductDAO();
+	private VoucherDAO vd = new VoucherDAO();
 	
 	private void components() {
 		panel = new JPanel();
@@ -86,6 +88,7 @@ public class BaristaView extends JFrame{
 		setLayout(null);
 		setSize(500,500);
 		setVisible(true);
+		getContentPane().setBackground(Color.WHITE);
 		setResizable(false);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
@@ -222,7 +225,6 @@ public class BaristaView extends JFrame{
 	private void add() {
 		addOP = new JOptionPane();
 		Vector<Product> products = new Vector<>();
-		ProductDAO pd = new ProductDAO();
 		products = pd.getAllProduct();
 		ArrayList<String>names = new ArrayList<>();
 		names.add("Select an item");
@@ -291,7 +293,7 @@ public class BaristaView extends JFrame{
 			result.showMessageDialog(null, "Voucher not found");
 			return false;
 		}else {
-			if(voucher.getStatus() == "N") {
+			if(voucher.getStatus().equals("N")) {
 				result.showMessageDialog(null, "Voucher is no longer valid");
 				return false;
 			}else {
@@ -350,13 +352,14 @@ public class BaristaView extends JFrame{
 				for(int i=0;i<cartSize;i++) {
 					TransactionDetailModel tdm = new TransactionDetailModel();
 					tdm.insert(nextAI,cart.get(i).getProduct().getId(),cart.get(i).getQuantity());
+					pd.reduceStock(cart.get(i).getProduct().getId(),cart.get(i).getQuantity());
+					vd.useVoucher(cart.get(i).getProduct().getId());
 				}
 				setVisible(false);
 				new LoginView();
 			}
 		}
-	}
-	
+	}	
 	
 	public BaristaView() {
 		initFrame();

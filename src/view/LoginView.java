@@ -65,6 +65,11 @@ public class LoginView extends JFrame implements ActionListener {
 		add(hrBtn);
 		add(managerBtn);
 	}
+	
+	private boolean login(String name) {
+		
+		return false;
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

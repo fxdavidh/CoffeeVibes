@@ -11,4 +11,8 @@ public class VoucherDAO {
 		Voucher voucher = vm.getVoucher(ID);
 		return voucher;
 	}
+	
+	public void useVoucher(int ID) {
+		vm.useVoucher(ID);
+	}
 }
