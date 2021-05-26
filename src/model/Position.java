@@ -3,6 +3,13 @@ package model;
 public class Position {
 	private int id;
 	private String name;
+	
+	public Position(int id, String name) {
+		// TODO Auto-generated constructor stub
+		super();
+		this.id = id;
+		this.name = name;
+	}
 
 	public int getId() {
 		return id;

@@ -8,6 +8,17 @@ public class Employee {
 	private int salary;
 	private String username;
 	private String password;
+	
+	public Employee(int id, int positionId, String name, String status, int salary, String username, String password) {
+		super();
+		this.id = id;
+		this.positionId = positionId;
+		this.name = name;
+		this.status = status;
+		this.salary = salary;
+		this.username = username;
+		this.password = password;
+	}
 
 	public int getId() {
 		return id;
