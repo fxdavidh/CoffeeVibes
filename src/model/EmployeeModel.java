@@ -82,17 +82,23 @@ public class EmployeeModel {
 	}
 	
 	public int getLatestId() {
-		int id = 0;
+		int index = -1;
+		String query = "SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'ooad' AND TABLE_NAME   = 'employees'";
+		ResultSet result = con.executeQuery(query);
+		
 		try {
-			String query = "select MAX(id) from employees";
-			ResultSet result = con.executeQuery(query);
-			while (result.next()) {
-				id = result.getInt(1);
+			if(result.next()) {
+				
+				index = result.getInt("AUTO_INCREMENT");
+				
+				return index;
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return id+1;
+		
+		return -1;
 	}
 	
 	public boolean validateLogin(int positionID, String username, String password) {
