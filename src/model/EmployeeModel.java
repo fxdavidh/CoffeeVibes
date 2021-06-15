@@ -102,7 +102,7 @@ public class EmployeeModel {
 	}
 	
 	public boolean validateLogin(int positionID, String username, String password) {
-		String query = "SELECT * from `employees` WHERE positionId = " + positionID + " AND username like '" + username +"' AND password like '" + password +"'";
+		String query = "SELECT * from `employees` WHERE positionId = " + positionID + " AND username like '" + username +"' AND password like '" + password +"'" + "AND status like 'A'";
 		ResultSet result = con.executeQuery(query);
 		try {
 			if(result.next()) {
@@ -115,5 +115,10 @@ public class EmployeeModel {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public void fireEmployee(int id) {
+		String query = "UPDATE `employees` SET status=\"F\" WHERE id=" + id;
+		con.executeUpdate(query);
 	}
 }

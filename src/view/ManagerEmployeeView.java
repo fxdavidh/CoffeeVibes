@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 
 import controller.EmployeeDAO;
 import controller.PositionDAO;
+import jdk.nashorn.internal.scripts.JO;
 import model.Employee;
 import model.Product;
 import model.TransactionDetail;
@@ -31,6 +32,7 @@ public class ManagerEmployeeView extends JFrame{
 	private JLabel TransactionID;
 	private JButton btnvw;
 	private JButton btnbc;
+	private JButton btnfr;
 	private JScrollPane jsp = new JScrollPane();
 	private JTable tbl;
 	private DefaultTableModel dtm; 
@@ -44,6 +46,7 @@ public class ManagerEmployeeView extends JFrame{
 		tbl = new JTable();
 		btnvw = new JButton("View");
 		btnbc = new JButton("Back");
+		btnfr = new JButton("Fire");
 	}
 	
 	private void init() {
@@ -61,7 +64,7 @@ public class ManagerEmployeeView extends JFrame{
 		tbl.setColumnSelectionAllowed(true);
 		tbl.setRowSelectionAllowed(true);
 		add(tbl);
-		btnvw.setBounds(185,375,100,50);
+		btnvw.setBounds(120,375,100,50);
 		btnvw.addActionListener(new ActionListener() {
 			
 			@Override
@@ -85,9 +88,33 @@ public class ManagerEmployeeView extends JFrame{
 				new ManagerView();
 			}
 		});
+		btnfr.setBounds(240,375,100,50);
+		btnfr.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(tbl.getSelectedRow() == -1) {
+					JOptionPane warning = new JOptionPane();
+					warning.showMessageDialog(null,"Select an employee first");
+					return;
+				}
+				fire(tbl.getSelectedRow());
+			}
+		});
 		add(btnvw);
 		add(btnbc);
+		add(btnfr);
 		refreshList();
+	}
+	
+	private void fire(int id) {
+		JOptionPane confirm = new JOptionPane();
+		int choice = confirm.showConfirmDialog(null,"Are you sure you want to fire this employee?","Confirmation",JOptionPane.YES_NO_OPTION);
+		if(choice == JOptionPane.YES_OPTION) {
+			ed.fireEmployee(id+1);
+			refreshList();
+		}
 	}
 	
 	private void view(int row) {

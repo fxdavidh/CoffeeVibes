@@ -60,4 +60,8 @@ public class EmployeeDAO {
 	public boolean validateLogin(int positionID, String username, String password) {
 		return em.validateLogin(positionID, username, password);
 	}
+	
+	public void fireEmployee(int id) {
+		em.fireEmployee(id);
+	}
 }

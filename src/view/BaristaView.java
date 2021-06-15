@@ -63,6 +63,7 @@ public class BaristaView extends JFrame{
 	JButton check;
 	JScrollPane jsp;
 	DefaultTableModel dtm; 
+	JButton btnbc;
 	private ArrayList<cartItem> cart = new ArrayList<>();
 	private Vector<String> header = new Vector<>();
 	private int totalprice = 0;
@@ -78,6 +79,7 @@ public class BaristaView extends JFrame{
 		btnadd = new JButton("Add");
 		btnvw = new JButton("View");
 		btnrv = new JButton("Remove");
+		btnbc = new JButton("Back");
 		tbl = new JTable();
 		jsp = new JScrollPane(tbl,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	}
@@ -204,6 +206,17 @@ public class BaristaView extends JFrame{
 				checkout();
 			}
 		});
+		btnbc.setBounds(0,0,100,50);
+		btnbc.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				setVisible(false);
+				new LoginView();
+			}
+		});
+		add(btnbc);
 		add(btnadd);
 		add(btnvw);
 		add(btnrv);
