@@ -16,16 +16,19 @@ public class ManagerView extends JFrame{
 	private JLabel title;
 	private JButton button1;
 	private JButton button2;
+	private JButton btnbc;
 	
 	private void components() {
 		title = new JLabel("Welcome Manager");
 		button1 = new JButton("Transactions");
 		button2 = new JButton("Employees");
+		btnbc = new JButton("Back");
 	}
 	
 	private void init() {
 		components();
 		title.setBounds(120,0,300,100);
+		title.setForeground(Color.WHITE);
 		title.setFont(new Font(title.getFont().getName(), Font.PLAIN, 30));
 		add(title);
 		button1.setBounds(140,150,200,50);
@@ -33,6 +36,7 @@ public class ManagerView extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
 				new ManagerTransactionView();
 			}
 		});
@@ -43,10 +47,22 @@ public class ManagerView extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				setVisible(false);
 				new ManagerEmployeeView();
 			}
 		});
 		add(button2);
+		btnbc.setBounds(0,0,100,50);
+		btnbc.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				setVisible(false);
+				new LoginView();
+			}
+		});
+		add(btnbc);
 	}
 	
 	private void initFrame() {
@@ -54,7 +70,7 @@ public class ManagerView extends JFrame{
 			setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 			setLayout(null);
 			setSize(500,500);
-			this.getContentPane().setBackground(Color.white);
+			this.getContentPane().setBackground(Color.BLACK);
 			setVisible(true);
 			setResizable(false);
 			Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

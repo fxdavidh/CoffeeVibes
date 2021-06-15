@@ -88,7 +88,7 @@ public class BaristaView extends JFrame{
 		setLayout(null);
 		setSize(500,500);
 		setVisible(true);
-		getContentPane().setBackground(Color.WHITE);
+		getContentPane().setBackground(Color.BLACK);
 		setResizable(false);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
@@ -157,6 +157,7 @@ public class BaristaView extends JFrame{
 		btnco.setBounds(190,400,100, 40);
 		lb.setBounds(110,-10,300,100);
 		lb.setFont(new Font(lb.getFont().getName(), Font.PLAIN, 50));
+		lb.setForeground(Color.WHITE);
 		tbl.setColumnSelectionAllowed(true);
 		tbl.setRowSelectionAllowed(true);
 		btnadd.setBounds(340,120,100,50);
