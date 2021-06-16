@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -27,8 +28,8 @@ import model.cartItem;
 
 public class ManagerTransactionView extends JFrame{
 	private JLabel title;
-	private JButton button1;
-	private JButton button2;
+	private JButton btnvw;
+	private JButton btnbc;
 	private JScrollPane jsp = new JScrollPane();
 	private JTable tbl;
 	private DefaultTableModel dtm; 
@@ -39,6 +40,8 @@ public class ManagerTransactionView extends JFrame{
 	private void components() {
 		title = new JLabel("Transactions List");
 		tbl = new JTable();
+		btnvw = new JButton("View");
+		btnbc = new JButton("Back");
 	}
 	
 	private void refreshList() {
@@ -63,15 +66,20 @@ public class ManagerTransactionView extends JFrame{
 	   	tbl.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 	            if (me.getClickCount() == 2) {
-	               JTable target = (JTable)me.getSource();
-	               int row = target.getSelectedRow();
-	               new ManagerTransactionDetailView(transactions.get(row).getId());
+	            	JTable target = (JTable)me.getSource();
+		            int row = target.getSelectedRow();
+		            view(row);
 	            }
 	         }
 		});
 		jsp = new JScrollPane(tbl,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		jsp.setBounds(15,100,450,250);
 		getContentPane().add(jsp);
+	}
+	
+	private void view(int row) {
+		setVisible(false);
+		new ManagerTransactionDetailView(transactions.get(row).getId());
 	}
 	
 	private void init() {
@@ -82,7 +90,33 @@ public class ManagerTransactionView extends JFrame{
 		header.add("Total Price");
 		title.setBounds(120,0,300,100);
 		title.setFont(new Font(title.getFont().getName(), Font.PLAIN, 30));
+		title.setForeground(Color.WHITE);
 		add(title);
+		btnvw.setBounds(185,360,100,50);
+		btnvw.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(tbl.getSelectedRow() == -1) {
+					JOptionPane warning = new JOptionPane();
+					warning.showMessageDialog(null,"Select a transaction first \nor double click the desired row");
+					return;
+				}
+				view(tbl.getSelectedRow());
+			}
+		});
+		btnbc.setBounds(0,0,100,50);
+		btnbc.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				setVisible(false);
+				new ManagerView();
+			}
+		});
+		add(btnvw);
+		add(btnbc);
 		tbl.setColumnSelectionAllowed(true);
 		tbl.setRowSelectionAllowed(true);
 		add(tbl);
@@ -94,7 +128,7 @@ public class ManagerTransactionView extends JFrame{
 			setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 			setLayout(null);
 			setSize(500,500);
-			this.getContentPane().setBackground(Color.white);
+			this.getContentPane().setBackground(Color.BLACK);
 			setVisible(true);
 			setResizable(false);
 			Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

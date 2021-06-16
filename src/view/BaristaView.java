@@ -63,6 +63,7 @@ public class BaristaView extends JFrame{
 	JButton check;
 	JScrollPane jsp;
 	DefaultTableModel dtm; 
+	JButton btnbc;
 	private ArrayList<cartItem> cart = new ArrayList<>();
 	private Vector<String> header = new Vector<>();
 	private int totalprice = 0;
@@ -78,6 +79,7 @@ public class BaristaView extends JFrame{
 		btnadd = new JButton("Add");
 		btnvw = new JButton("View");
 		btnrv = new JButton("Remove");
+		btnbc = new JButton("Back");
 		tbl = new JTable();
 		jsp = new JScrollPane(tbl,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	}
@@ -88,7 +90,7 @@ public class BaristaView extends JFrame{
 		setLayout(null);
 		setSize(500,500);
 		setVisible(true);
-		getContentPane().setBackground(Color.WHITE);
+		getContentPane().setBackground(Color.BLACK);
 		setResizable(false);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
@@ -157,6 +159,7 @@ public class BaristaView extends JFrame{
 		btnco.setBounds(190,400,100, 40);
 		lb.setBounds(110,-10,300,100);
 		lb.setFont(new Font(lb.getFont().getName(), Font.PLAIN, 50));
+		lb.setForeground(Color.WHITE);
 		tbl.setColumnSelectionAllowed(true);
 		tbl.setRowSelectionAllowed(true);
 		btnadd.setBounds(340,120,100,50);
@@ -203,6 +206,17 @@ public class BaristaView extends JFrame{
 				checkout();
 			}
 		});
+		btnbc.setBounds(0,0,100,50);
+		btnbc.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				setVisible(false);
+				new LoginView();
+			}
+		});
+		add(btnbc);
 		add(btnadd);
 		add(btnvw);
 		add(btnrv);

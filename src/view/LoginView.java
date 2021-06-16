@@ -5,16 +5,19 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import controller.EmployeeDAO;
@@ -36,7 +39,7 @@ public class LoginView extends JFrame implements ActionListener {
 		setSize(500, 500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
 		setLayout(null);
-		this.getContentPane().setBackground(Color.WHITE);
+		this.getContentPane().setBackground(Color.BLACK);
 		initHeader();
 		initButton();
 		setVisible(true);
@@ -47,8 +50,11 @@ public class LoginView extends JFrame implements ActionListener {
 	
 	private void initHeader() {
 		JLabel title = new JLabel("Coffee Vibes");
-		title.setBounds(150,0,300,100);
-		title.setFont(new Font(title.getFont().getName(), Font.BOLD, 30));
+		title.setForeground(Color.WHITE);
+		title.setBounds(80,0,500,100);
+		title.setFont(new Font(title.getFont().getName(), Font.BOLD, 40));
+		ImageIcon imgicon = new ImageIcon(new ImageIcon(getClass().getResource("../assets/cup.png")).getImage().getScaledInstance(60, 60, Image.SCALE_DEFAULT)); 
+		title.setIcon(imgicon);
 		add(title);
 	}
 	
@@ -82,7 +88,7 @@ public class LoginView extends JFrame implements ActionListener {
 		JTextField username = new JTextField();
 		panel.add(username);
 		panel.add(new JLabel("Password: "));
-		JTextField password = new JTextField();
+		JPasswordField password = new JPasswordField();
 		panel.add(password);
 		int choice = JOptionPane.showConfirmDialog(null,panel, 
 	               "Login as " + name, JOptionPane.OK_CANCEL_OPTION);
