@@ -45,17 +45,18 @@ import model.cartItem;
 
 public class AdminView extends JFrame {
 
-	JFrame fr;
-	JPanel pn;
-	JLabel lb;
-	JButton btnadd; 
-	JButton btnup; 
-	JButton btndl; 
-	JTable tbl;
-	JScrollPane jsp;
-	DefaultTableModel dtm; 
+	private JFrame fr;
+	private JPanel pn;
+	private JLabel lb;
+	private JButton btnadd; 
+	private JButton btnup; 
+	private JButton btndl; 
+	private JButton btnbc; 
+	private JTable tbl;
+	private JScrollPane jsp = new JScrollPane();
+	private DefaultTableModel dtm; 
 	
-	ProductDAO productDAO = new ProductDAO();
+	private ProductDAO productDAO = new ProductDAO();
 	
 	private Vector<Product> products = new Vector<Product>();
 	private Vector<String> header = new Vector<>();
@@ -66,15 +67,16 @@ public class AdminView extends JFrame {
 		btnadd = new JButton("Add");
 		btnup = new JButton("Update");
 		btndl = new JButton("Delete");
+		btnbc = new JButton("Back");
 		tbl = new JTable();
-		jsp = new JScrollPane(tbl,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	}
 	
 	private void initFrame() {
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(fr.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 		setLayout(null);
 		setSize(500,500);
+		this.getContentPane().setBackground(Color.BLACK);
 		setVisible(true);
 		setResizable(false);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -100,26 +102,26 @@ public class AdminView extends JFrame {
 	             return false;
 	          }
 	       };
-		jsp = new JScrollPane(tbl,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		jsp.setBounds(0, 80,300,300);
+	    jsp = new JScrollPane(tbl,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		jsp.setBounds(15,120,450,250);
 		getContentPane().add(jsp);
 	}
 	
 	private void init() {
-		components(); 
-		jsp.setBounds(0, 80,300,300);
+		components();
 		header.add("ID ");
 		header.add("Name");
 		header.add("Description");
 		header.add("Price");
 		header.add("Stock");
-		lb.setBounds(110,-10,300,100);
-		lb.setFont(new Font(lb.getFont().getName(), Font.PLAIN, 50));
+		lb.setBounds(120,0,300,100);
+		lb.setFont(new Font(lb.getFont().getName(), Font.PLAIN, 30));
+		lb.setForeground(Color.WHITE);
 		tbl.setColumnSelectionAllowed(true);
 		tbl.setRowSelectionAllowed(true);
-		btnadd.setBounds(340,120,100,50);
-		btnup.setBounds(340,200,100,50);
-		btndl.setBounds(340,280,100,50);
+		btnadd.setBounds(70,375,100,50);
+		btnup.setBounds(190,375,100,50);
+		btndl.setBounds(310,375,100,50);
 		btnadd.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -143,9 +145,20 @@ public class AdminView extends JFrame {
 				delete();
 			}
 		});
+		btnbc.setBounds(0,0,100,50);
+		btnbc.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				setVisible(false);
+				new LoginView();
+			}
+		});
 		add(btnadd);
 		add(btnup);
 		add(btndl);
+		add(btnbc);
 		add(tbl);
 		add(lb);
 		refreshList();

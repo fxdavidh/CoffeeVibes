@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -44,19 +45,20 @@ import model.Product;
 
 public class HRView extends JFrame {
 
-	JFrame fr;
-	JPanel pn;
-	JLabel lb;
-	JButton btnadd; 
-	JButton btnup; 
-	JButton btndl; 
-	JButton btnpos;
-	JTable tbl;
-	JScrollPane jsp;
-	DefaultTableModel dtm; 
+	private JFrame fr;
+	private JPanel pn;
+	private JLabel lb;
+	private JButton btnadd; 
+	private JButton btnup; 
+	private JButton btndl; 
+	private JButton btnpos;
+	private JButton btnbc;
+	private JTable tbl;
+	private JScrollPane jsp = new JScrollPane();
+	private DefaultTableModel dtm; 
 	
-	EmployeeDAO employeeDAO = new EmployeeDAO();
-	PositionDAO positionDAO = new PositionDAO();
+	private EmployeeDAO employeeDAO = new EmployeeDAO();
+	private PositionDAO positionDAO = new PositionDAO();
 	
 	private Vector<Employee> employees = new Vector<Employee>();
 	private Vector<Position> positions = new Vector<Position>();
@@ -73,17 +75,17 @@ public class HRView extends JFrame {
 		btnup = new JButton("Update");
 		btndl = new JButton("Delete");
 		btnpos = new JButton("New Position");
+		btnbc = new JButton("Back");
 		tbl = new JTable();
-		jsp = new JScrollPane(tbl,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	}
 	
 	private void initFrame() {
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(fr.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 		setLayout(null);
 		setSize(500,500);
+		this.getContentPane().setBackground(Color.BLACK);
 		setVisible(true);
-		
 		setResizable(false);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
@@ -112,13 +114,12 @@ public class HRView extends JFrame {
 	          }
 	       };
 		jsp = new JScrollPane(tbl,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		jsp.setBounds(0, 80,300,300);
+		jsp.setBounds(15,120,450,250);
 		getContentPane().add(jsp);
 	}
 	
 	private void init() {
 		components(); 
-		jsp.setBounds(0, 80,300,300);
 		header.add("ID ");
 		header.add("PositionID");
 		header.add("Name");
@@ -126,14 +127,15 @@ public class HRView extends JFrame {
 		header.add("Salary");
 		header.add("Username");
 		header.add("Password");
-		lb.setBounds(110,-10,300,100);
-		lb.setFont(new Font(lb.getFont().getName(), Font.PLAIN, 50));
+		lb.setBounds(120,0,300,100);
+		lb.setFont(new Font(lb.getFont().getName(), Font.PLAIN, 30));
+		lb.setForeground(Color.WHITE);
 		tbl.setColumnSelectionAllowed(true);
 		tbl.setRowSelectionAllowed(true);
-		btnpos.setBounds(340,40,100,50);
-		btnadd.setBounds(340,120,100,50);
-		btnup.setBounds(340,200,100,50);
-		btndl.setBounds(340,280,100,50);
+		btnpos.setBounds(365,60,100,50);
+		btnadd.setBounds(70,375,100,50);
+		btnup.setBounds(190,375,100,50);
+		btndl.setBounds(310,375,100,50);
 
 		btnpos.addActionListener(new ActionListener() {
 			@Override
@@ -166,10 +168,21 @@ public class HRView extends JFrame {
 				delete();
 			}
 		});
+		btnbc.setBounds(0,0,100,50);
+		btnbc.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				setVisible(false);
+				new LoginView();
+			}
+		});
 		add(btnpos);
 		add(btnadd);
 		add(btnup);
 		add(btndl);
+		add(btnbc);
 		add(tbl);
 		add(lb);
 		refreshList();
