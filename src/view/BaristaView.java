@@ -115,6 +115,15 @@ public class BaristaView extends JFrame{
 	             return false;
 	          }
 	       };
+	       tbl.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent me) {
+		            if (me.getClickCount() == 2) {
+		               JTable target = (JTable)me.getSource();
+		               int row = target.getSelectedRow();
+		               view();
+		            }
+		         }
+			});
 		jsp = new JScrollPane(tbl,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		jsp.setBounds(0, 80,300,300);
 		getContentPane().add(jsp);
@@ -249,7 +258,7 @@ public class BaristaView extends JFrame{
 		Object[] namesfix = names.toArray();
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(0,1));
-		panel.add(new JLabel("Product ID: "));
+		panel.add(new JLabel("Product Name: "));
 		JComboBox combo = new JComboBox(namesfix);
 		panel.add(combo);
 		panel.add(new JLabel("Quantity: "));
@@ -352,25 +361,34 @@ public class BaristaView extends JFrame{
 		total = new JLabel("Total Price: " + totalprice);
 		panel.add(total);
 		int choice = JOptionPane.showConfirmDialog(null,panel, 
-	               total.getText() + "\nCheckout Now?", JOptionPane.OK_CANCEL_OPTION);
+	               "Checkout", JOptionPane.OK_CANCEL_OPTION);
 		if(choice == JOptionPane.OK_OPTION) {
 			JOptionPane warning = new JOptionPane();
 			if(totalprice == 0) {
 				warning.showMessageDialog(null, "No item in cart");
 				checkout();
 			}else {
-				TransactionHeaderDAO thd = new TransactionHeaderDAO();
-				int nextAI = thd.getNextAI();
-				thd.insertHeader(Integer.parseInt(ID.getText()));
-				int cartSize = cart.size();
-				for(int i=0;i<cartSize;i++) {
-					TransactionDetailModel tdm = new TransactionDetailModel();
-					tdm.insert(nextAI,cart.get(i).getProduct().getId(),cart.get(i).getQuantity());
-					pd.reduceStock(cart.get(i).getProduct().getId(),cart.get(i).getQuantity());
-					vd.useVoucher(cart.get(i).getProduct().getId());
+				int lastconfirm = JOptionPane.showConfirmDialog(null, 
+			               total.getText() + "\nCheckout Now?", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
+				if(lastconfirm == JOptionPane.OK_OPTION) {			
+					TransactionHeaderDAO thd = new TransactionHeaderDAO();
+					int nextAI = thd.getNextAI();
+					if(!ID.getText().isEmpty()) {
+						thd.insertHeader(Integer.parseInt(ID.getText()));					
+					}else {
+						thd.insertHeader(-1);
+					}
+					int cartSize = cart.size();
+					for(int i=0;i<cartSize;i++) {
+						TransactionDetailModel tdm = new TransactionDetailModel();
+						tdm.insert(nextAI,cart.get(i).getProduct().getId(),cart.get(i).getQuantity());
+						pd.reduceStock(cart.get(i).getProduct().getId(),cart.get(i).getQuantity());
+						vd.useVoucher(cart.get(i).getProduct().getId());
+					}
+					warning.showMessageDialog(null, "Transaction successfully recorded");
+					setVisible(false);
+					new LoginView();
 				}
-				setVisible(false);
-				new LoginView();
 			}
 		}
 	}	
