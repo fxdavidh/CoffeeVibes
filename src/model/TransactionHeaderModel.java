@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import connection.Connect;
 
@@ -35,8 +36,29 @@ public class TransactionHeaderModel {
 	public void insert(int voucherID) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
 		LocalDateTime now = LocalDateTime.now();  
-		System.out.println(dtf.format(now));  
 		String query = "INSERT INTO `transaction_header`(`purchaseDate`, `voucherId`) VALUES('"+ dtf.format(now)+"','"+voucherID +"')";
 		con.executeUpdate(query);
+	}
+	
+	public ArrayList<TransactionHeader> getTransactionHeaders() {
+		String query = "SELECT * FROM `transaction_header`";
+		ArrayList<TransactionHeader> transactions = new ArrayList<>();
+		ResultSet result = con.executeQuery(query);
+		int id,voucherID;
+		Date date;
+		try {
+			while(result.next()) {
+				id = result.getInt("id");
+				date = result.getDate("purchaseDate");
+				voucherID = result.getInt("voucherId");
+				transactions.add(new TransactionHeader(id,date,voucherID));
+			}
+			return transactions;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 }

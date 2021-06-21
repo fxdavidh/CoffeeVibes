@@ -1,19 +1,18 @@
 package model;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class TransactionHeader {
 	private int id;
-	private String purchaseDate;
+	private Date purchaseDate;
 	private int voucherId;
-	private int totalPrice;
-	private ArrayList<String> itemList = new ArrayList<String>();
-
+	
 	public int getId() {
 		return id;
 	}
 
-	public String getPurchaseDate() {
+	public Date getPurchaseDate() {
 		return purchaseDate;
 	}
 
@@ -21,19 +20,11 @@ public class TransactionHeader {
 		return voucherId;
 	}
 
-	public int getTotalPrice() {
-		return totalPrice;
-	}
-
-	public ArrayList<String> getItemList() {
-		return itemList;
-	}
-
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	public void setPurchaseDate(String purchaseDate) {
+	public void setPurchaseDate(Date purchaseDate) {
 		this.purchaseDate = purchaseDate;
 	}
 
@@ -41,12 +32,11 @@ public class TransactionHeader {
 		this.voucherId = voucherId;
 	}
 
-	public void setTotalPrice(int totalPrice) {
-		this.totalPrice = totalPrice;
+	public TransactionHeader(int id, Date purchaseDate, int voucherId) {
+		super();
+		this.id = id;
+		this.purchaseDate = purchaseDate;
+		this.voucherId = voucherId;
 	}
-
-	public void setItemList(ArrayList<String> itemList) {
-		this.itemList = itemList;
-	}
-
+	
 }

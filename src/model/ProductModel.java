@@ -78,16 +78,51 @@ public class ProductModel {
 	}
 	
 	public int getLatestId() {
-		int id = 0;
+		int index = -1;
+		String query = "SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'ooad' AND TABLE_NAME   = 'products'";
+		ResultSet result = con.executeQuery(query);
+		
 		try {
-			String query = "select MAX(id) from products";
-			ResultSet result = con.executeQuery(query);
-			while (result.next()) {
-				id = result.getInt(1);
+			if(result.next()) {
+				
+				index = result.getInt("AUTO_INCREMENT");
+				
+				return index;
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return id+1;
+		
+		return -1;
+	}
+	
+	public Product getProduct(int index) {
+		String query = "SELECT * FROM `products` WHERE id =" + index;
+		ResultSet result = con.executeQuery(query);
+		int ID,price,stock;
+		String name,desc;
+		try {
+			if(result.next()) {
+				ID = result.getInt("id");
+				name = result.getString("name");
+				desc = result.getString("description");
+				price = result.getInt("price");
+				stock = result.getInt("stock");
+				Product product = new Product(ID,name,desc,price,stock);
+				return product;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	public void reduceStock(int index,int quantity) {
+		Product product = this.getProduct(index);
+		String query = "UPDATE `products` SET `stock`='"+ (product.getStock() - quantity) +"' WHERE id = " + index;
+		con.executeUpdate(query);
 	}
 }

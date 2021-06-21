@@ -44,16 +44,52 @@ public class PositionModel {
 	}
 
 	public int getLatestId() {
-		int id = 0;
+		int index = -1;
+		String query = "SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'ooad' AND TABLE_NAME   = 'positions'";
+		ResultSet result = con.executeQuery(query);
+		
 		try {
-			String query = "select MAX(id) from positions";
-			ResultSet result = con.executeQuery(query);
-			while (result.next()) {
-				id = result.getInt(1);
+			if(result.next()) {
+				
+				index = result.getInt("AUTO_INCREMENT");
+				
+				return index;
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return id+1;
+		
+		return -1;
+	}
+	
+	public int getPositionID(String name) {
+		String query = "SELECT id FROM `positions` WHERE name like '" + name + "'";
+		ResultSet result = con.executeQuery(query);
+		try {
+			if(result.next()) {
+				int ID = result.getInt("id");
+				return ID;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	public String getPositionName(int ID){
+		String query = "SELECT `name` FROM `positions` WHERE id =" + ID;
+		ResultSet result = con.executeQuery(query);
+		try {
+			if(result.next()) {
+				String name = result.getString("name");
+				return name;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
 	}
 }

@@ -5,20 +5,30 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+import controller.EmployeeDAO;
+import controller.PositionDAO;
 
 
 public class LoginView extends JFrame implements ActionListener {
 	
 	JButton adminBtn, baristaBtn, hrBtn, managerBtn;
+	private PositionDAO pd = new PositionDAO();
+	private EmployeeDAO ed = new EmployeeDAO();
 	
 	public LoginView() {
 		initFrame();
@@ -29,7 +39,7 @@ public class LoginView extends JFrame implements ActionListener {
 		setSize(500, 500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
 		setLayout(null);
-		this.getContentPane().setBackground(Color.WHITE);
+		this.getContentPane().setBackground(Color.BLACK);
 		initHeader();
 		initButton();
 		setVisible(true);
@@ -40,8 +50,11 @@ public class LoginView extends JFrame implements ActionListener {
 	
 	private void initHeader() {
 		JLabel title = new JLabel("Coffee Vibes");
-		title.setBounds(150,0,300,100);
-		title.setFont(new Font(title.getFont().getName(), Font.BOLD, 30));
+		title.setForeground(Color.WHITE);
+		title.setBounds(80,0,500,100);
+		title.setFont(new Font(title.getFont().getName(), Font.BOLD, 40));
+		ImageIcon imgicon = new ImageIcon(new ImageIcon(getClass().getResource("../assets/cup.png")).getImage().getScaledInstance(60, 60, Image.SCALE_DEFAULT)); 
+		title.setIcon(imgicon);
 		add(title);
 	}
 	
@@ -65,25 +78,73 @@ public class LoginView extends JFrame implements ActionListener {
 		add(hrBtn);
 		add(managerBtn);
 	}
+	
+	private boolean login(String name) {
+		int ID = pd.getPositionId(name);
+		JOptionPane login = new JOptionPane();
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(0,1));
+		panel.add(new JLabel("Username: "));
+		JTextField username = new JTextField();
+		panel.add(username);
+		panel.add(new JLabel("Password: "));
+		JPasswordField password = new JPasswordField();
+		panel.add(password);
+		int choice = JOptionPane.showConfirmDialog(null,panel, 
+	               "Login as " + name, JOptionPane.OK_CANCEL_OPTION);
+		if(choice == JOptionPane.OK_OPTION) {
+			JOptionPane warning = new JOptionPane();
+			if(username.getText().isEmpty()) {
+				warning.showMessageDialog(null,"Username Cannot be Empty!!");
+				login(name);
+				return false;
+			}else {
+				if(password.getText().isEmpty()) {
+					warning.showMessageDialog(null,"Password Cannot be Empty!!");
+					login(name);
+					return false;
+				}else {	
+					if(ed.validateLogin(ID,username.getText(),password.getText()) == false) {
+						warning.showMessageDialog(null, "Username or Password is incorrect");
+						login(name);
+						return false;
+					}else {
+						warning.showMessageDialog(null,"Login as "+ name +" Success");
+						return true;
+					}								
+				}
+			}
+		}else {
+			return false;
+		}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getSource().equals(adminBtn)){
-			setVisible(false);
-			new AdminView();
+			if(login("Admin")) {
+				setVisible(false);
+				new AdminProductView();
+			}
 		} 
 		else if (e.getSource().equals(baristaBtn)){
-			setVisible(false);
-			new BaristaView();
+			if(login("Barista")) {
+				setVisible(false);
+				new BaristaView();
+			}
 		}
 		else if (e.getSource().equals(hrBtn)){
-			setVisible(false);
-			new HRView();
+			if(login("HR")) {
+				setVisible(false);
+				new HRView();
+			}
 		}
 		else if (e.getSource().equals(managerBtn)){
-			setVisible(false);
-			new ManagerView();
+			if(login("Manager")) {
+				setVisible(false);
+				new ManagerView();
+			}
 		}
 	}
 }

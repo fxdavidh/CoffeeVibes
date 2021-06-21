@@ -1,5 +1,4 @@
 package controller;
-
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -44,6 +43,10 @@ public class EmployeeDAO {
 			}
 		}
 		int tempId = Integer.parseInt(id);
+		
+		if(status.equalsIgnoreCase("active")) status = "A";
+		else status = "F";
+		
 		int tempSalary = Integer.parseInt(salary);
 		em.updateEmployee(tempId, tempPosition, name, status, tempSalary, username, password);
 	}
@@ -52,5 +55,13 @@ public class EmployeeDAO {
 		// TODO Auto-generated method stub
 		int tempId = Integer.parseInt(id);
 		em.deleteEmployee(tempId);
+	}
+	
+	public boolean validateLogin(int positionID, String username, String password) {
+		return em.validateLogin(positionID, username, password);
+	}
+	
+	public void fireEmployee(int id) {
+		em.fireEmployee(id);
 	}
 }

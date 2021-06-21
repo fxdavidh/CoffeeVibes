@@ -28,4 +28,11 @@ public class TransactionDetail {
 	public void setQty(int qty) {
 		this.qty = qty;
 	}
+
+	public TransactionDetail(int id, int productId, int qty) {
+		super();
+		this.id = id;
+		this.productId = productId;
+		this.qty = qty;
+	}
 }

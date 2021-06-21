@@ -33,7 +33,8 @@ public class Employee {
 	}
 
 	public String getStatus() {
-		return status;
+		if(status.equalsIgnoreCase("a")) return "Active";
+		else return "Fired";
 	}
 
 	public int getSalary() {
