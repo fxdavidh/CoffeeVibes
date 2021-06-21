@@ -8,6 +8,8 @@ import java.awt.TextField;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -113,6 +115,13 @@ public class HRView extends JFrame {
 	             return false;
 	          }
 	       };
+		tbl.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent me) {
+		            if (me.getClickCount() == 2) {
+		               view();
+		            }
+		         }
+			});
 		jsp = new JScrollPane(tbl,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		jsp.setBounds(15,120,450,250);
 		getContentPane().add(jsp);
@@ -132,7 +141,7 @@ public class HRView extends JFrame {
 		lb.setForeground(Color.WHITE);
 		tbl.setColumnSelectionAllowed(true);
 		tbl.setRowSelectionAllowed(true);
-		btnpos.setBounds(365,60,100,50);
+		btnpos.setBounds(345,60,120,50);
 		btnadd.setBounds(70,375,100,50);
 		btnup.setBounds(190,375,100,50);
 		btndl.setBounds(310,375,100,50);
@@ -461,6 +470,25 @@ public class HRView extends JFrame {
 				employeeDAO.deleteEmployee(id);
 				refreshList();
 			}
+		}
+	}
+
+	private void view() {
+		int index = -1;
+		index = tbl.getSelectedRow();
+		if(index == -1) {
+			JOptionPane.showMessageDialog(null, "Please select an Employee to VIEW");
+			refreshList();
+		}
+		else {
+           JOptionPane view = new JOptionPane();
+           view.showMessageDialog(null,"Employee ID : " + tbl.getValueAt(index, 0).toString() + "\n" +
+									   "Employee Position ID : " + tbl.getValueAt(index, 1).toString() + "\n" +
+									   "Employee Name : " + tbl.getValueAt(index, 2).toString() + "\n" +
+									   "Employee Status : " + tbl.getValueAt(index, 3).toString() + "\n" +
+									   "Employee Salary : " + tbl.getValueAt(index, 4).toString() + "\n" +
+									   "Employee Username : " + tbl.getValueAt(index, 5).toString() + "\n" +
+									   "Employee Password : " + tbl.getValueAt(index, 6).toString());
 		}
 	}
 }
