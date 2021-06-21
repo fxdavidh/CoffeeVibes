@@ -125,7 +125,7 @@ public class LoginView extends JFrame implements ActionListener {
 		if (e.getSource().equals(adminBtn)){
 			if(login("Admin")) {
 				setVisible(false);
-				new AdminView();
+				new AdminProductView();
 			}
 		} 
 		else if (e.getSource().equals(baristaBtn)){
