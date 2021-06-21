@@ -123,7 +123,7 @@ public class AdminProductView extends JFrame {
 		header.add("Description");
 		header.add("Price");
 		header.add("Stock");
-		lb.setBounds(120,0,300,100);
+		lb.setBounds(150,10,300,100);
 		lb.setFont(new Font(lb.getFont().getName(), Font.PLAIN, 30));
 		lb.setForeground(Color.WHITE);
 		tbl.setColumnSelectionAllowed(true);
